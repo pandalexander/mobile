@@ -5,7 +5,8 @@ FROM node:22-bookworm-slim
 # Install git
 # Refresh package lists, install git (-y confirms), --no-install-recommends avoids extra packages,
 # then clean up apt lists to reduce image size.
-RUN apt-get update && apt-get install -y git --no-install-recommends \
+# Install git AND the ssh client
+RUN apt-get update && apt-get install -y git openssh-client --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 # === END OF ADDED LINES ===
 
