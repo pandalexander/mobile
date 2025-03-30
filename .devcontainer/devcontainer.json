@@ -1,0 +1,62 @@
+{
+  "name": "React Native Expo Dev Container",
+
+  // Point to your docker-compose.yml file
+  "dockerComposeFile": ["../docker-compose.yml"],
+
+  // The service defined in docker-compose.yml to use for the container
+  "service": "app",
+
+  // The workspace folder inside the container
+  "workspaceFolder": "/app",
+
+  // Forward ports from the container to the host
+  // Optional if already defined in docker-compose.yml, but good for clarity
+  "forwardPorts": [19000, 19001, 19002, 8081],
+
+  // Set environment variables for file watching (redundant if in compose, but safe)
+  "containerEnv": {
+    "CHOKIDAR_USEPOLLING": "true",
+    "WATCHPACK_POLLING": "true",
+    "HOST": "0.0.0.0"
+  },
+
+  // VS Code settings to apply specifically within this container
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+    // Add any other container-specific settings
+  },
+
+  // VS Code extensions to install automatically inside the container
+  "extensions": [
+    "dbaeumer.vscode-eslint", // Example: Linter
+    "esbenp.prettier-vscode", // Example: Formatter
+    "msjsdiag.vscode-react-native", // React Native Tools
+    "expo.vscode-expo-tools" // Expo Tools for VS Code
+    // Add other extensions your team uses
+  ],
+
+  // Run commands after the container is created
+  // Useful for ensuring everything is set up correctly
+  // "postCreateCommand": "npm install", // Uncomment if you sometimes face issues with node_modules initialization
+
+  // Use 'postStartCommand' to automatically start Expo if desired
+  // "postStartCommand": "npx expo start",
+
+  // Keep the container running even if VS Code disconnects
+  "shutdownAction": "stopCompose", // Or "none" if you want it to persist
+
+  // Use the host's Git credentials within the container
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
+  ],
+  // Ensure the user inside the container matches your host user's UID/GID
+  // This helps avoid permission issues with mounted volumes, especially on Linux.
+  // 'node' is the default user in the official Node images.
+  "remoteUser": "node"
+  // If permission issues persist on Linux, try:
+  // "remoteUser": "${localEnv:USER}" // Or explicitly set UID/GID
+  // "containerUser": "node" // Keep container user as node
+  // "updateRemoteUserUID": true // If using Docker Desktop >= 4.15
+}
